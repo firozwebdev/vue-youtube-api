@@ -1,24 +1,35 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>Hello world</h1>
-    <router-view/>
+    
+    <SearchBar @termChange="oneTermChange"></SearchBar>
+    
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import SearchBar from './components/SearchBar';
+const API_KEY = 'AIzaSyBDM7Cj8wCdzN38O6mfXCzUfGjnFhwrYdY';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    SearchBar
+  },
+  methods: {
+    oneTermChange (searchTerm) {
+      axios.get('https://www.googleapis.com/youtube/v3/search', {
+        params: {
+          key: API_KEY,
+          type: 'video',
+          part: 'snippet',
+          q: searchTerm
+        }
+      }).then( res => console.log(res));
+    }
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
